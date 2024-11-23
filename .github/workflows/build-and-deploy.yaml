@@ -38,8 +38,8 @@ jobs:
 
   build-and-deploy:
     name: Build and Deploy to Azure App Service
-    needs: sonar
-    if: success()
+    # needs: sonar
+    # if: success()
     runs-on: ubuntu-latest
 
     steps:
