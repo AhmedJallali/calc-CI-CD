@@ -73,7 +73,7 @@ jobs:
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
-          app-name: mp2lwebapp
+          app-name: mp2lwebapp2
           images: mp2lacr.azurecr.io/myapp:${{ github.sha }}
 
       # Déconnexion d'Azure
