@@ -1,6 +1,6 @@
-
-FROM ubuntu:latest
-RUN apt-get update && apt-get install python3-pip -y
-ADD prog.py prog.py
-ADD calc.py calc.py
-CMD python3 prog.py
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+COPY index.html .
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
