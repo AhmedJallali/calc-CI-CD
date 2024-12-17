@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build, Analyze, and Deploy
 
 on:
   push:
@@ -10,43 +10,43 @@ permissions:
   contents: read
 
 jobs:
-  # sonar:
-  #   name: SonarQube Analysis
-  #   runs-on: ubuntu-latest
+  sonar:
+   name: SonarQube Analysis
+   runs-on: ubuntu-latest
 
-  #   steps:
-  #     # Étape 1 : Récupération du code source
-  #     - name: Checkout code
-  #       uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0
+   steps:
+     # Étape 1 : Récupération du code source
+     - name: Checkout code
+       uses: actions/checkout@v3
+       with:
+         fetch-depth: 0
 
-  #     # Étape 2 : Configuration de Java (nécessaire pour SonarQube)
-  #     - name: Set up JDK 11
-  #       uses: actions/setup-java@v3
-  #       with:
-  #         java-version: 11
-  #         distribution: temurin
+     # Étape 2 : Configuration de Java (nécessaire pour SonarQube)
+     - name: Set up JDK 11
+       uses: actions/setup-java@v3
+       with:
+         java-version: 11
+         distribution: temurin
 
-  #     # Étape 3 : Analyse SonarQube
-  #     - name: Run SonarQube Analysis
-  #       uses: sonarsource/sonarqube-scan-action@v2.1.0 # Remplacez par la version requise
-  #       env:
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  #         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-  #       with:
-  #         projectBaseDir: ./sources
-  #         args: >
-  #           -Dsonar.projectKey=mp2l
-  #           -Dsonar.sources=.
-  #           -Dsonar.exclusions=**/node_modules/**,**/dist/**
+     # Étape 3 : Analyse SonarQube
+     - name: Run SonarQube Analysis
+       uses: sonarsource/sonarqube-scan-action@v2.1.0 # Remplacez par la version requise
+       env:
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+       with:
+         projectBaseDir: ./sources
+         args: >
+           -Dsonar.projectKey=mp2l
+           -Dsonar.sources=.
+           -Dsonar.exclusions=**/node_modules/**,**/dist/**
 
-  #     # Étape 4 : Vérification du Quality Gate
-  #     - name: Check Quality Gate
-  #       uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
-  #       timeout-minutes: 5
-  #       env:
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+     # Étape 4 : Vérification du Quality Gate
+     - name: Check Quality Gate
+       uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+       timeout-minutes: 5
+       env:
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build-and-deploy:
     name: Build and Deploy to Azure App Service
