@@ -48,7 +48,7 @@ jobs:
   #       env:
   #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  build-and-deploy:
+  build-and-deploy-2:
     name: Build and Deploy to Azure App Service
     needs: sonar
     if: success() # Exécute uniquement si l'analyse SonarQube réussit
