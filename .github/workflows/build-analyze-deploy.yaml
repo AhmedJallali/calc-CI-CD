@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  sonar:
-    name: SonarQube Analysis
+  sonarcloud:
+    name: SonarCloud Analysis
     runs-on: ubuntu-latest
 
     steps:
@@ -26,27 +26,33 @@ jobs:
           java-version: 11
           distribution: temurin
 
-      - name: Run SonarQube Analysis
-        uses: sonarsource/sonarqube-scan-action@v2.1.0
+      - name: Cache SonarCloud dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+
+      - name: Run SonarCloud Analysis
+        uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           projectBaseDir: ./sources
           args: >
-            -Dsonar.projectKey=mp2l
+            -Dsonar.projectKey=AhmedJallali_calc-CI-CD
+            -Dsonar.organization=ahmedjallali
             -Dsonar.sources=.
             -Dsonar.exclusions=**/node_modules/**,**/dist/**
 
       - name: Check Quality Gate
-        uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+        uses: SonarSource/sonarcloud-quality-gate-action@v1.1.0
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   docker:
     name: Build and Push Docker Image
-    needs: sonar
+    needs: sonarcloud
     runs-on: ubuntu-latest
 
     steps:
@@ -63,7 +69,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v3
