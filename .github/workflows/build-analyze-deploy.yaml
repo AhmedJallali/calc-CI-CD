@@ -36,7 +36,7 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=AhmedJallali_calc-CI-CD
-            -Dsonar.organization=AhmedJallali
+            -Dsonar.organization=ahmedjallali
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.sources=.
             -Dsonar.exclusions=**/node_modules/**,**/dist/**
